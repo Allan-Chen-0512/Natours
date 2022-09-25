@@ -1,0 +1,115 @@
+
+.footer{
+
+    background-color: $color-grey-dark-3;
+    padding: 10rem 0;
+    font-size: 1.4rem;
+    color: $color-grey-light-1;
+
+    
+    &__logo-box{
+        text-align: center; // to fit logo img(inline element) to center 
+        margin-bottom: 8rem;
+
+        @include respond(tab-port){
+            // rems in media queries have different values
+            margin-bottom: 6rem;
+        }
+
+
+    }
+
+
+    &__logo{
+        width: 15rem;
+        // height is automactically adjusted
+    }
+
+    &__navigation{
+        border-top: 1px solid $color-grey-dark;
+        padding-top: 2rem;
+
+        // the div is block level element therefore border goes across whole div. now it is only on top of the elements
+        // since width = the max width of elements nested.
+        display: inline-block;
+        width: 80%;
+
+
+
+
+        @include respond(tab-port){
+            width: 100%;
+        }
+
+        @include respond(phone){
+            width: 100%;
+        }
+    }
+
+    &__list{
+        list-style: none;
+    }
+    
+    &__item{
+        display: inline-block;
+
+        &:not(:last-child){
+            margin-right: 3rem;
+
+            @include respond(tab-port){
+                margin-right: 1.5rem;
+            }
+        }
+        
+    }
+
+    &__link{
+
+        &:link , &:visited{
+
+            color: $color-grey-light-1;
+            text-decoration: none;
+            
+            // transform property won't work on &:hover, if element is not block or inline block element. (i guess it has to do with those width and height and things)
+            display: inline-block;
+
+            transition: all .2s;
+            background-color: $color-grey-dark-3;
+
+        }
+
+        &:hover , &:active {
+            color: $color-primary;
+            box-shadow: 0 1rem 2rem rgba($color-black, .4);
+            transform: rotate(5deg) scale(1.3);
+        }
+
+        
+    }
+
+
+    &__copyright{
+        padding-top: 2rem;
+        border-top: 1px solid $color-grey-dark;
+
+        display: inline-block;
+        width: 80%;
+
+        // since we are in a grid, switch float off and everything is left aligned to the cell. // @ footer we want symmetry therefore width:80%(random num); and float:right;
+        // float: right;
+
+        // Decided to change the design, i did not use float.
+        // i used utility "u-center-text" class on both col-1-of-2 since both nested children are inline-block 
+        // i gave both the inline-block the same width so that they can both be "u-text-center" in their own cell and be symmetric
+
+
+
+        @include respond(tab-port){
+            width: 100%;
+        }
+
+        @include respond(phone){
+            width: 100%;
+        }
+    }
+}

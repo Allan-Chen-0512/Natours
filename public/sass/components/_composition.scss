@@ -1,0 +1,84 @@
+.composition{
+
+    position: relative;
+    z-index: 9999;
+
+    &__photo{
+        
+        width: 55%;
+        box-shadow: 0 1.5rem 4rem rgba($color-black, .4);
+        border-radius: 2px;
+
+        position: absolute;
+        // we change the z-index when we :hover , therefore we need to set it back
+        z-index: 0;
+        // remember that thing with transition
+        transition: all .2s; 
+
+        outline-offset: 2rem;
+
+
+        @include respond(tab-port){
+            position: relative;
+            
+         
+            width: 33.33333%;
+            box-shadow: 0 1.5rem 3rem rgba($color-black, .2);
+
+            // important property // toggle it on and off// remove it and add to either &--p1/p2/p3 or p1 &  p2 etc. to try it out
+            float: left;
+            
+        }
+
+        &--p1{
+            left: 0;
+            top: -2rem;
+            
+            @include respond(tab-port){
+                
+                top: 0;
+                transform: scale(1.2) translateY(1rem);
+            }
+        }
+
+        &--p2{
+            right: 0;
+            top: 2rem;
+
+            @include respond(tab-port){
+                
+                top: 0;
+                transform: scale(1.3);
+                z-index: 100;
+
+            }
+        }
+
+        &--p3{
+            left: 20%;
+            top: 10rem;
+
+            @include respond(tab-port){
+                
+                top: 0;
+                left: 0;
+                transform: scale(1.2) translateY(1rem);
+
+            }
+        }
+
+
+        &:hover{
+            outline: 1.5rem solid $color-primary;
+            // transform: scale(1.05) translateY(-.5rem); This has that transform glith. Google about it (transform animation glitch?)(backface visibility?)
+            transform: scale(1.05);
+            box-shadow: 0 2.5rem 4rem rgba($color-black, .5);
+            z-index: 10;
+        }
+    }
+
+    // pretty cool selector , the elements are considered part of the composition, even though they are absolutely positioned
+    &:hover &__photo:not(:hover){
+        transform: scale(.95);
+    }
+}

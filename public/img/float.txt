@@ -1,0 +1,6 @@
+// can think of float 
+
+
+Like a person is floating in the water. Everything in the water will flow around you. you can float left , right . and the items will still flow around you.
+
+(you are not removed from the water ( so not lifted up ) you still take space in the water. (so not removed from document flow? (don't know if thats correct usage of that term )))

@@ -1,0 +1,241 @@
+.navigation{
+
+
+    &__checkbox {
+        display: none;
+
+    }
+
+    &__button {
+        background-color: white;
+
+        height: 7rem;
+        width: 7rem;
+        border-radius: 50%;
+
+        position: fixed;
+        top: 6rem;
+        right: 6rem;
+
+        z-index: 75;
+        box-shadow: 0 1rem 3rem rgba($color-black, .1);
+
+        cursor: pointer;
+
+        // if we move btn, we also have to change bg size // read below paragraph
+        @include respond(tab-port){
+            top: 4rem;
+            right: 4rem;
+        }
+
+        @include respond(phone){
+            top: 3rem;
+            right: 3rem;
+        }
+
+    }
+    // our background is a div (circular shape) (centered in a certain position), (&__button is a <label> also in circular shape with bigger dimensions, placed on top and to cover our bg div)
+    // Basically brief summary of how the nav works , is that when we click on the <label> (which is a whole big circle) the "input" element(with display:none;) connected to the label will have status of ":checked", and when "checked" we will use the psuedo class to implement styles
+    // => our bg div will expand(scale(80) super big, and display the nav links.
+
+    &__background {
+
+        height: 6rem;
+        width: 6rem;
+        border-radius: 50%;
+
+        position: fixed;
+        top: 6.5rem;
+        right: 6.5rem;
+
+        // linear gradient starts from one side to another, radial gradient starts from center and extends outward
+        background-image: radial-gradient($color-primary-light, $color-primary-dark);
+
+        z-index: 50;
+        // transform: scale(80);
+
+        transition: transform .6s ease-out;
+
+
+        // if we move bg btn, we also have to move the "&__button" button
+        @include respond(tab-port){
+            top: 4.5rem;
+            right: 4.5rem;
+        }
+
+        @include respond(phone){
+            top: 3.5rem;
+            right: 3.5rem;
+        }
+
+    }
+
+    &__nav {
+        height: 100vh;
+        width: 100%;
+
+        position: fixed;
+        top: 0;
+        left: 0;
+
+        z-index: 60;
+
+        // we will show nav when &__backgroun expands.
+        // only setting opacity to 0, still leaves "clickable links" on the page, just invisible. Therefore we will transform
+        opacity: 0;
+        transform: translateX(-100%);
+
+        // check out on cubic bezier timing functions
+        transition: all .8s cubic-bezier(.48 , -.25 , .265 , 1.55);
+
+    }
+
+    &__list {
+        
+        position: absolute;
+        top: 50%;
+        left: 0%;
+        transform: translate(0%, -50%);
+
+        list-style: none;
+        text-align: center;
+
+        width: 100%;
+        
+    }
+
+    &__item{
+        margin: 1rem;
+    }
+
+    &__link{
+
+        &:link, &:visited{
+            font-size: 3rem;
+            font-weight: 350;
+            //element has to be block or inline-block for padding to work
+            padding: 1rem 2rem;
+            display: inline-block;
+
+
+            color: $color-white;
+            text-decoration: none;
+            text-transform: uppercase;
+
+            background-image: linear-gradient(120deg, transparent 50% , $color-white 50%);
+            background-size: 230%;
+
+            transition: all .4s;
+
+            // generally every element should have a class, but its too much of an overkill, so we just gonna use <span> element selector
+            span{
+           
+                margin-right: 1rem;
+                // to allow padding / margin / height / width to be respected // even though we working with margin-right and we don't need to set display:inline-block;, it is still useful.
+                display: inline-block;
+            }
+
+            @include respond(phone){
+                font-size: 3rem;
+            }
+        }
+
+        &:hover, &:active{
+            // we basically move the bg position (origin) to (50%,0) of the bg img. Our bg size is 230% , and below we move 100% in x direction therefore 50%.
+            // cant specify 2cnd value (y direction) in our bg position in % maybe becasue we have no defined height(along those lines). (with trial and error i noticed the bg height was not scaled to 230% only width was scaled) 
+            // (so bg size Y was not scaled and bg position y-direction cannot be in %) (which makes the assumption its relates to us not giving height for bg img) (=> don't know how one would go and do that) 
+            // Most probably our element <a> is inline.
+            // if it were block or inline-block , bg size Y will scale and etc.
+            background-position: 100%;
+
+            color: $color-primary;
+
+            // element has to be block/inline-block for transfrom to work // we set element  to in &:link, &:visited
+            transform: translateX(1rem);
+        }
+        
+    }
+
+    &__checkbox:checked ~ &__background{
+        // to expand our &__background after client clicks on &__button
+        transform: scale(80);
+    }
+
+    &__checkbox:checked ~ &__nav{
+        // since &__background shows , we can now display &__nav
+        opacity: 1;
+        transform: translateX(0);
+
+    }
+
+
+
+    /// ICON
+    // Basically just some styles for our &__button // doesn't change any concept
+
+
+    &__icon{
+
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        
+
+        &, &::before, &::after{
+            width: 3rem;
+            height: 2px;
+            background-color: $color-grey-dark-3;
+
+            display: inline-block;
+
+        }
+
+        &::before, &::after{
+            content: "";
+            // positioned absolutely to &__icon
+            position: absolute;
+            left: 0;
+
+            transition: all .2s;
+        }
+
+        &::before{
+            top: -.8rem;
+        }
+
+        &::after{
+            top: .8rem;
+        }
+    }
+
+
+    &__button:hover &__icon::before{
+        top: -1rem;
+    }
+
+    &__button:hover &__icon::after{
+        top: 1rem;
+    }
+
+    &__checkbox:checked + &__button &__icon{
+        background-color: transparent;
+    }
+ 
+    // moving both the &__icon::before and  &__icon::after to top:0;
+    // puts them in the same position as &__icon
+    // therefore when we rotate with transform origin at center it creates the "X"
+    &__checkbox:checked + &__button &__icon::before{
+        transform: rotate(135deg);
+
+        top: 0;
+    }
+
+    &__checkbox:checked + &__button &__icon::after{
+        transform: rotate(-135deg);
+        
+        top: 0;
+    }
+    
+
+}

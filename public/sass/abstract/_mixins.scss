@@ -1,0 +1,128 @@
+
+
+@mixin clearfix(){
+    &::after{
+        content: "";
+        display: table;
+        clear: both;
+    }
+}
+
+
+
+@mixin absCenter {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50% , -50%);
+}
+
+
+// short note on media queries
+
+// usauly we would (under relevant file)
+
+// @media (max-width:1500px){
+//     html{
+//         width: 50%;
+//     }
+
+//      .... 
+//  }
+
+
+//  @media (max-width:1000px){ 
+//     html{
+//        width: 25%;          
+//     }
+
+//      ....   
+//   }
+
+// but with Sass we are allowed to 
+
+// html{
+//     font-size: 62.5%;
+
+//     @media (max-width:1500px){
+//         width: 50%;
+//     }
+
+//     @media (max-width:1000px){
+//         width: 25%;
+//     }
+// }
+
+// we will use this, but not hard code everything (therefore we are using a mixin)
+
+
+
+
+// MEDIA QUERIES MANAGER
+
+
+// 0 - 600px  Phone
+// 600 - 900px  Tablet Portrait 
+// 900 - 1200px  Tablet Landscape
+// [1200 - 1800] is where our normal styles apply ( since we already started with desktop first approach)
+// 1800px +   Big Desktop
+
+
+// usually with mixins we can include an argument , @include mixin("x");
+// but we can also provide blocks of code. @include mixin{ font-size: 19px; } , @content is replaced with the block provided
+
+// @mixin respond-phone{
+//     @media (max-width:600px){
+//         @content
+//     };
+// }
+
+// Breakpoint argument choices
+// - phone 
+// - tab-port
+// - tab-land
+// - big-desk
+
+@mixin respond($breakpoint){
+
+    // ORDER FOR THESE MEDIA QUERIES MATTER (EVERYWHERE AT EVERY ELEMENT)
+
+
+    // phone doesn't need to be 'phone'
+    @if $breakpoint == phone {
+        // That's because ems and rems in media queries, are not affected by a root font size setting,
+        // 1em / 1rem is always eqaul to the font-size doming from the browser = default 16px
+        // we will use ems because rems fail to work as intended in some browsers
+        // alot of research was done and conclusion is that ems is better
+
+        @media only screen and (max-width:37.5em){              // 600 / 16 = 37.5 
+            @content
+        };
+    }
+    @if $breakpoint == tab-port {
+        // considered best practice to add "only screen" which means that the media query only gets applied to screens, so for example if someone tries to print out our page, then these media queries don't apply,
+        @media only screen and (max-width:56.25em){              // 900 px
+            @content
+        };
+    }
+    @if $breakpoint == tab-land {                // 1200px
+        @media only screen and (max-width:75em){
+            @content
+        };
+    }
+    @if $breakpoint == big-desk {                // 1800px
+        @media only screen and (min-width:112.5em){
+            @content
+        };
+    }
+  
+}
+
+//Order with implementing our media queries
+
+// Base + Typography
+// General Layout + Grid
+// Page layout 
+// Components
+
+

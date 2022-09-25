@@ -1,0 +1,55 @@
+//These are basic definitions for our css
+
+/* CSS Reset start */
+*,*::before,*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: inherit;
+}
+
+html{
+    // this will translates to a percentage of the font size given by the browser
+    // so 62.5% translates to 10px
+    // this defines what 1 rem is (it's just a setting) // therefore not really typography (what is applied to web page)
+    // 10px / 16px = 62.5%
+    // 1 rem = 10px
+    font-size: 62.5%;
+
+
+    @include respond(big-desk) {
+        font-size: 75%;
+    }
+    @include respond(tab-land) {
+        font-size: 56.25%;
+    }
+    @include respond(tab-port) {
+        // 1rem = 8px
+        font-size: 50%;
+    }
+
+}
+
+/* More efficient and better practice to use inheritance than rather placing everything under universal selector */
+body {
+    // we should use inheritance whenever we can
+    //Other text related properties for inheritance is moved under "typography"
+    padding: 3rem;
+    //This is considered a slightly better practice by the CSS community because it makes it a bit easier to change the box-sizing like in plugins or other components where we might want to use a different property for box-sizing. 
+    // doesn't make a huge difference, just a slightly better practice to do the box-sizing:border-box; like this and have ( * { box-sizing:inherit; } ).
+    box-sizing: border-box;
+
+    @include respond(tab-port){
+        padding: 0;
+    } 
+
+}
+/* CSS reset end */
+
+
+
+/// don't know why we can just "::selection"
+::selection{
+    background-color: $color-primary;
+    color: $color-white;
+}
+

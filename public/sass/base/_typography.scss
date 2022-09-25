@@ -1,0 +1,108 @@
+/* text related properties reset */
+/* More efficient and better practice to use inheritance than rather placing everything under universal selector */
+body {
+    
+    font-family: "Lato" , sans-serif;
+    font-weight: 400;
+    // font-size: 16px;
+    color: $color-grey-dark;
+    line-height: 1.7;
+
+    
+}
+
+.heading-primary{
+    color: $color-white;
+    text-transform: uppercase;
+
+    margin-bottom: 6rem;
+
+    /* 
+    backface-visibility:hidden; (Google about it) ( This is fix for animation property. "the shake problem", Video 8 @ 12:01 )
+    */
+
+    &--main{
+        display: block;
+        font-size: 6rem;
+        font-weight: 400;
+        letter-spacing: 3.5rem;
+        /*animation*/
+        animation-name: moveInLeft;
+        animation-duration: 1s;
+        animation-timing-function: ease-out;
+        /* animation properties
+            animation-delay
+            animation-iteration-count
+            animation
+        */
+
+        @include respond(phone){
+            letter-spacing: 1rem;
+            font-size: 6rem;
+        }
+    
+    }
+    
+    &--sub{
+        display: block;
+        font-size: 2rem;
+        font-weight: 700;
+        letter-spacing: 1.75rem;
+        animation: moveInRight 1s ease-out;
+        
+        @include respond(phone){
+            letter-spacing: .5rem;
+        }
+    
+    }
+}
+
+.heading-secondary{
+    font-size: 3.5rem;
+    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing: .2rem;
+ 
+    background-image: linear-gradient(to right, $color-primary-light, $color-primary-dark);
+    // to not allow gradient to go across the whole vw 
+    display: inline-block;
+    // this will clip the background to exactly where the text sits
+    -webkit-background-clip: text;
+    background-clip: text;
+
+    color: transparent;
+
+    // hope you know about that "that" thing with transition
+    transition: all .2s;
+
+    // ORDER FOR THESE MEDIA QUERIES MATTER (EVERYWHERE AT EVERY ELEMENT)
+    @include respond(tab-port){
+        font-size: 2.75rem;
+    }
+
+    @include respond(phone){
+        font-size: 2.2rem;
+    }
+
+    &:hover{
+        transform: skewY(2deg) skewX(15deg) scale(1.1);
+        text-shadow: .5rem 1rem 2rem rgba($color-black, .2);
+    }
+
+}
+
+
+.heading-tertiary{
+    font-size: $default-font-size;
+    font-weight: 700;
+    text-transform: uppercase;
+
+}
+
+.paragraph{
+    font-size: $default-font-size;
+
+    &:not(:last-child){
+        margin-bottom: 3rem;
+    }
+}

@@ -1,0 +1,134 @@
+.popup{
+
+    height: 100vh;
+    width: 100%;
+  
+    position: fixed;
+    top: 0;
+    left: 0;
+
+    background-color: rgba($color-black, .8);
+
+    z-index: 9999;
+
+
+    // we not going to use display: none; to hide the popup because we cant animate it (the value is not numeric)
+    // display: none;
+
+    opacity: 0;
+    visibility: hidden;
+
+    transition: all .5s;
+
+
+    @supports (backdrop-filter: blur(0)){
+        backdrop-filter: blur(10px);
+        // we can redefine a property. 
+        // so this really help us have a different design based on the @support
+        // eg. code for x browser and have @support structed for y browser // (NB!) choosing x to (@)y / y to (@)x is not simple (eg. sometimes its firefox = x , and chrome = y , 
+        //      becasue chrome supports alot of features , making it easier to adjust (since @support is at the last of list styles)) (But you will have to see)
+        background-color: rgba($color-black, .3);   
+    }
+
+   
+    &__content{
+        
+        width: 75%;
+        // height: 50rem; testing purposes
+        background-color: $color-white;
+        box-shadow: 0 2rem 4rem rgba($color-black, .2);
+
+        @include absCenter;
+
+        border-radius: 3px;
+        overflow: hidden;
+
+        display: table;
+
+    }
+
+
+    // The display "table", "table-cell" and "vertical alignment" is kinda confusing, do trial and error where one cell is img and the other is text, and see what vertical-align does.
+
+
+    &__left{
+        width: 33.33333%;
+        display: table-cell;
+        // this is very important 
+        vertical-align: middle;
+
+    }
+
+    &__right{
+        width: 66.666666%;
+        display: table-cell;
+        // this is very important 
+        vertical-align: middle;
+
+        padding:3rem 5rem;
+        
+    }
+
+    &__img{
+        display: block;
+        width: 100%;
+    }
+
+    &__text{
+        font-size: 1.4rem;
+        margin-bottom: 4rem;
+
+        -moz-column-count: 2;
+        -moz-column-gap: 4rem; // default = 1 em
+        //line between columns
+        -moz-column-rule: 1px solid $color-grey-light-2;
+
+        column-count: 2;
+        column-gap: 4rem; // default = 1 em
+        //line between columns
+        column-rule: 1px solid $color-grey-light-2;
+
+        // lang="en" in <html> needs to be defined
+        -moz-hyphens: auto;
+        -ms-hyphens: auto;
+        -webkit-hyphens: auto;
+        hyphens: auto;
+    }
+
+
+     // !!!!!!!!!!!!!!!
+    // Can go through these styles last
+
+            // :target == when we click a btn (<a>) which has href="#popup", element with id "popup" becomes "target". thus this selector is satisfied when the button( <a> ) with href="#popup" is clicked
+            // we can only have one target at a time // current webpage eg. our "X"(has class popup__close) button( <a> ) in our popup has href='section-tours' therefore &:target is no longer true and the below properties are gone
+            &:target{
+                opacity: 1;
+                visibility: visible;
+            }
+
+            &__close{
+                &:link, &:visited{
+                    color: $color-grey-dark;
+
+                    position: absolute;
+                    top: 2.5rem;
+                    right: 2.5rem;
+
+                    font-size: 3rem;
+                    text-decoration: none;
+                    display: inline-block;
+
+                    transition: all .2s;
+                    line-height: 1;
+                }
+
+                &:hover{
+                    color: $color-primary;
+                }
+            }
+    
+    // !!!!!!!!!!!!!!!
+
+
+
+}

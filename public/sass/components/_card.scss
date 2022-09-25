@@ -1,0 +1,249 @@
+.card{
+
+    //Functionality
+    // we specify this height (again, (after &__side), because perspective needs a height on its element) even though our &__side has the same height
+    height: 50rem;
+    
+    perspective: 150rem;
+    //to allow perspective to work in firefox
+    -moz-perspective: 150rem;
+
+    position: relative;
+    
+    &__side{
+        height: 50rem;
+    
+        transition: all .8s ease; 
+
+        // absolute positioning makes an element take up its own width. (the width of the content)(therefore we set width = 100% to cell width of cell again)
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        border-radius: 3px;
+        // our images overflow ( we could have also added border radius on card__picture )
+        overflow: hidden;
+        box-shadow: 0 1.5rem 4rem rgba($color-black, .15);
+
+        // pretty cool property, this is basically the core of making our duel sided card work. (having this on now, means that the "back" card begins hidden(since it's rotated to show the back (180deg))
+        // the front card is not hidden , but when it rotates to -90deg(the back will begin to show), it get hidden and the "back" card shows (it also rotates 90deg but from 180deg to 0deg so at 90deg, the (the front of this card_side begins to show)
+        backface-visibility: hidden;
+
+        &--front{
+
+            // background-color: orangered; testing purposes
+            background-color: $color-white;
+
+        }
+
+        &--back{
+            // background-color: green; testing purposes
+            transform: rotateY(180deg);
+
+            &--1{
+                background-image: linear-gradient(to right bottom, $color-secondary-light , $color-secondary-dark);
+            }
+
+            &--2{
+                background-image: linear-gradient(to right bottom, $color-primary-light , $color-primary-dark);
+            }
+
+            &--3{
+                background-image: linear-gradient(to right bottom, $color-tertiary-light , $color-tertiary-dark);
+            }
+        }
+    }
+    
+
+    &:hover &__side--front{
+        transform: rotateY(-180deg);
+    }
+
+    &:hover &__side--back{
+        //(the original(norm) = 0deg)
+        transform: rotateY(0deg);
+    }
+
+
+    //Front side styling
+    &__picture{
+
+        background-size: cover;
+        height: 23rem;
+        background-blend-mode: screen;
+
+        // to allow clip-path to work across all browsers
+        -webkit-clip-path: polygon(0 0 , 100% 0 , 100% 85%, 0 100%);
+        clip-path: polygon(0 0 , 100% 0 , 100% 85%, 0 100%);
+        // clip path cancels the overflow which we set in &--side
+        border-top-left-radius: 3px;
+        border-top-right-radius: 3px;
+    
+        &--1{
+            // this location is relative to our main.css
+            background-image: linear-gradient(to right bottom, $color-secondary-light , $color-secondary-dark), url(../../img/nat-5.jpg);
+            
+        }
+
+        &--2{
+            background-image: linear-gradient(to right bottom, $color-primary-light , $color-primary-dark), url(../../img/nat-6.jpg);
+            
+        }
+
+        &--3{
+            background-image: linear-gradient(to right bottom, $color-tertiary-light , $color-tertiary-dark), url(../../img/nat-7.jpg);
+            
+        }
+
+    }
+
+    &__heading{
+        font-size: 2.8rem;
+        font-weight: 300;
+        text-transform: uppercase;
+        color: $color-white;
+        text-align: right;
+
+        position: absolute;
+        top: 12rem;
+        right: 2rem;
+
+        width: 75%;
+
+    }
+
+    &__heading-span{
+
+        padding: 1rem 1.5rem;
+        // Without this you will notice that the padding is applied to the left side of "The" and right side of "Explorer". This below treats the two lines as if they were seperate elements
+        -webkit-box-decoration-break: clone;
+        box-decoration-break: clone;
+
+
+        &--1{
+            background-image: linear-gradient(to right bottom, rgba($color-secondary-light, .85) , rgba($color-secondary-dark, .85));
+        }
+
+        &--2{
+            background-image: linear-gradient(to right bottom, rgba($color-primary-light, .85) , rgba($color-primary-dark, .85));
+        }
+
+        &--3{
+            background-image: linear-gradient(to right bottom, rgba($color-tertiary-light, .85) , rgba($color-tertiary-dark, .85));
+        }
+    }
+
+
+    &__details{
+        padding: 1rem 2rem;
+        font-size: 1.5rem;
+        width: 80%;
+        margin: 0 auto;
+    }
+
+
+    &__list{
+
+        list-style: none;
+    
+        li {
+
+            text-align: center;         
+            padding: 1rem;
+
+            &:not(:last-child){
+                border-bottom: 1px solid $color-grey-light-2;
+            }
+        }
+    }
+
+
+    // Back side styling
+    &__cta{
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+
+        // uncheck and check width to identify difference
+        width: 90%;
+        text-align: center;
+    }
+
+    &__price-box{
+        margin-bottom: 8rem;
+        color: $color-white;
+    }
+
+    &__price-only{
+        font-size: 1.4rem;
+        text-transform: uppercase;
+
+    }
+
+    &__price-value{
+        font-size: 6rem;
+        font-weight: 300;
+    }
+
+    // we have to kind of re-implement the card because on mobile there is no ":hover"
+    // the styles under here are the styles we want to change // 
+    // shortcut is to copy all the styles above into the { } and then remove the ones you don't want to change
+
+    // only screen and (max-width:56.25em) or screens with no hover
+    @media only screen and (max-width:56.25em), only screen and (hover:none) {
+       
+        height: auto;
+        border-radius: 3px;
+        background-color: white;
+        box-shadow: 0 1.5rem 4rem rgba($color-black, .15);
+
+        
+        
+        &__side{
+            height: auto;
+            position: relative;
+            
+            &--back{
+
+                transform: rotateY(0);
+                -webkit-clip-path: polygon( 0 15% , 100% 0 , 100% 100%, 0 100%);
+                clip-path: polygon( 0 15% , 100% 0 , 100% 100%, 0 100%);
+            }
+        }
+        
+        &:hover &__side--front{
+            transform: rotateY(0deg);
+        }
+
+
+        &__details{
+            padding: 1rem 3rem;
+        }
+
+
+        // Back side styling
+        &__cta{
+            position: relative;
+            top: 0;
+            left: 0;
+            transform: translate(0);
+            width: 100%; 
+
+            padding: 7rem 4rem 4rem 4rem;
+
+        }
+
+        &__price-box{
+            margin-bottom: 3rem;
+        }
+
+        &__price-value{
+            font-size: 4rem;
+        }
+
+    }
+
+
+}
+

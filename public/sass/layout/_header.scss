@@ -1,0 +1,91 @@
+/* header */
+.header {
+    height: 95vh;
+    /* gradient img is above url img */
+    background-image: linear-gradient(to right bottom, rgba($color-primary-light, 0.8), rgba($color-primary-dark, 0.8)) , url(../img/hero-small.jpg);
+    background-size: cover;
+    background-position: top;
+    /* ths position property is for child elements where position = absolute*/
+    position: relative;
+
+    // to allow clip-path to work across all browsers
+    -webkit-clip-path: polygon( 0 0 , 100% 0 , 100% 75vh , 0 100% ) ;
+    clip-path: polygon( 0 0 , 100% 0 , 100% 75vh , 0 100% ) ;
+
+
+    // CSS Responsive Images
+    // we have two bg-images, one smaller (1200px) and one bigger (2000px)
+    // our current set bg image is "hero-small"
+    // 192DPI IS THE resolution of apple  retina screen, therefore high-resolution screen , we will use 192dpi as reference
+    // we have the min-width condition beacuse lets say that a user is on mobile with 2x screen, satisfying the condition of 192dpi, however if the width of the phone
+    // is only 600px we don't need a 2000px width image. A 1200px image will suffice. since dpr = 2x , 2 x 600px = 1200px , so we would only need the 1200px image (hero-small )
+    // for if the phone width is <= 600px.
+
+    // one em is 16px
+    @media only screen and (min-resolution: 192dpi) and (min-width:37.5em) {
+        background-image: linear-gradient(to right bottom, rgba($color-primary-light, 0.8), rgba($color-primary-dark, 0.8)) , url(../img/hero.jpg);
+    }
+
+    // This media query and top part is seperate, so ignore top part.
+    // what we have now is hero-small for 0 < screen-width < 2000px and hero.jpg 2000px < screen-width at DPR 1.0 ( < 192dpi ) , since hero-small only has width of 1200px , if we have a screen width of 1500px  hero-small will be scaled up.
+    // but ofc we can set hero-small for 0 < screen-width < 1200px and hero.jpg for 1200px < screen-width; then when we have screen width of 1500px, hero.jpg will be scaled down. (which will be more clearer than hero-small)
+    // but we choose to have hero-small for 0 < screen-width < 2000px at DPR 1.0. and hero.jpg for screen-width > 2000px.
+    // hero.jpg also happens at  (min-resolution: 192dpi) (2x) and (min-width:37.5em)
+
+    // the reason we even change images, is just for repsonsive image, in this case we only switch to hero.jpg at 2000px < screen-width , even though switching at 1200px < screen-width may result in clearer images ealier on, but it doesnt really matter.
+    // "2000px < screen-width" results in somewhat blurry images between screen-width 1200px to 2000px because we use 1200px hero-small.jpg to scale up. But then from 2000px onwards we use hero.jpg, the benefit is that we wouldnt have to download to much resources when screen-width is between 1200px and 2000px , becasue 1200px hero-small has samller "download size"
+    // "1200px < screen-width" means clearer images between 1200px and 2000px since we use 2000px hero-small.jpg to scale down. The negative benefit ...
+
+    @media  only screen and (min-width: 125em) {
+        background-image: linear-gradient(to right bottom, rgba($color-primary-light, 0.8), rgba($color-primary-dark, 0.8)) , url(../img/hero.jpg);
+    }
+
+
+
+    // how it should look like in the end
+    // min-resolution doesnt work in old safari / however -webkit-mine-device-pixel-ratio works
+    // note that commas mean "or"
+    
+        // @media  only screen and (min-resolution: 192dpi) and (min-width:37.5em) ,
+        //     
+                // this two basically means that "2x" / which is really the same as having min-resolution:192dpi
+                
+        //         only screen and (-webkit-mine-device-pixel-ratio:2) and (min-width:37.5em) ,
+        //         only screen and (min-width: 125em) {
+        //                                         
+        //          background-image: linear-gradient(to right bottom, rgba($color-primary-light, 0.8), rgba($color-primary-dark, 0.8)) , url(../img/hero.jpg);
+        // }
+
+
+    @include respond(phone){
+        -webkit-clip-path: polygon( 0 0 , 100% 0 , 100% 85vh , 0 100% ) ;
+        clip-path: polygon( 0 0 , 100% 0 , 100% 85vh , 0 100% ) ;
+    }
+
+
+    /* top left logo */
+    &__logo-box{
+        /* parent position must be relative */
+        position: absolute;
+        top: 4rem;
+        left: 4rem;
+    }
+
+    &__logo{
+        height: 3.5rem;
+        /* width is automatically adjusted // since it is an img */
+    }
+
+    /* heading text */
+    &__text-box{
+        /* to center our header text*/
+        position: absolute;
+        top: 40%;
+        left: 50%;
+        /* -50% of its own width and height */
+        transform: translate(-50%,-50%);
+    
+        text-align: center;
+    }
+    
+}
